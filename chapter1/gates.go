@@ -68,9 +68,14 @@ func MUX(a, b, sel bool) bool {
 // the value of input A if the selector input is false, and the value of
 // input B if the selector pin is true.
 func PureMUX(a, b, sel bool) bool {
-	outa := NAND(NAND(a, NAND(sel, sel)), NAND(a, NAND(sel, sel)))
-	outb := NAND(NAND(b, sel), NAND(b, sel))
-	return NAND(NAND(outa, outa), NAND(outb, outb))
+	return NAND(
+		NAND(
+			NAND(NAND(a, NAND(sel, sel)), NAND(a, NAND(sel, sel))),
+			NAND(NAND(a, NAND(sel, sel)), NAND(a, NAND(sel, sel)))),
+		NAND(
+			NAND(NAND(b, sel), NAND(b, sel)),
+			NAND(NAND(b, sel), NAND(b, sel))))
+
 }
 
 // DMUX is a gate which returns the value of the input on A if sel is
