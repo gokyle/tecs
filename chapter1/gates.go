@@ -72,3 +72,20 @@ func PureMUX(a, b, sel bool) bool {
 	outb := NAND(NAND(b, sel), NAND(b, sel))
 	return NAND(NAND(outa, outa), NAND(outb, outb))
 }
+
+// DMUX is a gate which returns the value of the input on A if sel is
+// false, or the value of the input on B if the sel is true.
+func DMUX(in, sel bool) (a, b bool) {
+	a = AND(in, NOT(sel))
+	b = AND(in, sel)
+	return
+}
+
+// PureDMUX is a NAND-only implementation of a DMUX gate, which returns
+// the value of the input on A if sel is false, or the value of the input
+// on B if the sel is true.
+func PureDMUX(in, sel bool) (a, b bool) {
+	a = NAND(NAND(in, NAND(sel, sel)), NAND(in, NAND(sel, sel)))
+	b = NAND(NAND(in, sel), NAND(in, sel))
+	return
+}

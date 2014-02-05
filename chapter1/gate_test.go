@@ -81,3 +81,26 @@ func TestMUX(t *testing.T) {
 		}
 	}
 }
+
+func TestDMUX(t *testing.T) {
+	type DMuxTest struct {
+		In, Sel bool
+		A, B    bool
+	}
+	tests := []DMuxTest{
+		DMuxTest{false, false, false, false},
+		DMuxTest{false, true, false, false},
+		DMuxTest{true, false, true, false},
+		DMuxTest{true, true, false, true},
+	}
+	for _, tc := range tests {
+		if a, b := DMUX(tc.In, tc.Sel); a != tc.A || b != tc.B {
+			t.Fatalf("expected DMUX(%v, %v) -> %v, %v", tc.In,
+				tc.Sel, tc.A, tc.B)
+		}
+		if a, b := PureDMUX(tc.In, tc.Sel); a != tc.A || b != tc.B {
+			t.Fatalf("expected DMUXP(%v, %v) -> %v, %v", tc.In,
+				tc.Sel, tc.A, tc.B)
+		}
+	}
+}
